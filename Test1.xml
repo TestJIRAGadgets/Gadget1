@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs
+  title="Test1"
+  author="Jean Tu"
+  <!--thumbnail= To be decided  -->
+  description="First test of a Gadget to see what it will look like"
+  />
+</ModulePrefs>
+
+<UserPref
+  name="show_date"
+  display_name="Show Dates?"
+  datatype="bool"
+  default_value="true"/>
+<UserPref
+  name="show_summ"
+  display_name="Show Summaries?"
+  datatype="bool"
+  default_value = "true"/>
+<UserPref
+  name="num_entries"
+  display_name="Number of Entries:"
+  default_value="5"
+  required="true"/>
+
+<Content type="html">
+  <![CDATA[
+    <link rel="stylesheet"
+      href="http://labs.atlassian.com/svn/GADGETS/trunk/jira-issues/basic/jira-issues.css">
+
+      <div id="content_div"><div>
+        <script type="text/javascript">
+          var msg = new gadgets.MiniMessage();
+          var loadMessage = msg.createStaticMessage("loading...");
+
+          var prefs =  new gadgets.Prefs();
+          var showDate = prefs.getBool("show_date");
+          var showSumm = prefs.getBool("show_summ");
+          var numEntries = prefs.getInt("num_entries");
+
+          gadgets.util.registerOnLoadhandler(fetchIssues);
+
+          function handleResponse(obj){
+            var domData = obj.data;
+
+            var jiraIssues ={
+              title: getTitle(domData),
+              items: getItems(domData)
+            };
+            renderJiraIssues(jiraIssues);
+
+            msg.dismissMessage(loadMessage);
+            gadgets.window.adjustHeight();
+          </script>
+
+
+  ]]>
+</Content>
+</Module>
